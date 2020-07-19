@@ -15,6 +15,17 @@
                         <p class="mb-0">{!! nl2br(e($picture->content)) !!}</p>
                     </div>
                     <div>
+                        @if(Auth::user()->is_favorites($picture->id))
+                           {{--お気に入り解除ボタンのフォーム--}}
+                           {!! Form::open(['route'=>['favorites.unfavorite',$picture->id],'method'=>'delete']) !!}
+                               {!! Form::submit('いいね解除',['class'=>'btn btn-success btn-sm']) !!}
+                           {!! Form::close() !!}
+                        @else
+                            {{--お気に入りボタンのフォーム--}}
+                            {!! Form::open(['route'=>['favorites.favorite',$picture->id]]) !!}
+                                {!! Form::submit('いいね',['class'=>'btn btn-default btn-sm']) !!}
+                            {!! Form::close() !!}
+                        @endif
                         @if(Auth::id() == $picture->user_id)
                             {{--投稿削除ボタンのフォーム--}}
                             {!! Form::open(['route'=>['pictures.destroy',$picture->id],'method'=>'delete']) !!}

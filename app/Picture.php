@@ -15,4 +15,10 @@ class Picture extends Model
     {
         return $this->belongsTo(User::class);
     }
+    
+    //この投稿をお気に入りしているユーザ
+    public function favorite_users()
+    {
+        return $this->belongsToMany(Picture::class,'favorites','picture_id','user_id')->withTimestamps();
+    }
 }

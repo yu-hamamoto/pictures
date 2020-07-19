@@ -107,8 +107,51 @@ class User extends Authenticatable
         return Picture::whereIn('user_id',$userIds);
     }
     
+    //このユーザがお気に入りの投稿
+    public function favorites()
+    {
+        return $this->belongsToMany(Picture::class,'favorites','user_id','picture_id')->withTimestamps();
+    }
+    
+    public function favorite($pictureId)
+    {
+        //すでにお気に入りしているかの確認
+        $exist=$this->is_favorites($pictureId);
+        
+        if($exist){
+            //すでにお気に入りしていれば何もしない
+            return false;
+        } else {
+            //お気に入りされていなければお気に入りする
+            $this->favorites()->attach($pictureId);
+            return true;
+        }
+    }
+    
+    public function unfavorite($pictureId)
+    {
+        //すでにお気に入りしているかの確認
+        $exist=$this->is_favorites($pictureId);
+        
+        if($exist){
+            //すでにお気に入りしていればお気に入り解除
+            $this->favorites()->detach($pictureId);
+            return true;
+        } else {
+            //お気に入りしていなければ何もしない
+            return false;
+        }
+    }
+    
+    public function is_favorites($pictureId)
+    {
+        //お気に入り中の投稿の中に$pictureIdのものが存在するか
+        return $this->favorites()->where('picture_id',$pictureId)->exists();
+    }
+    
     public function loadRelationshipCounts()
     {
-        $this->loadCount(['pictures','followings','followers']);
+        $this->loadCount(['pictures','followings','followers','favorites']);
     }
+    
 }
