@@ -2,8 +2,13 @@
     <ul class="list-unstyled">
         @foreach($pictures as $picture)
             <li class="media mb-3">
-                {{--投稿者のメールアドレスをもとにGravatarを取得して表示--}}
-                <img class="mr-2 rounded" src="{{ Gravatar::get($picture->user->email,['size'=>50]) }}" alt="">
+                 @if($picture->picture_url)
+                    <img src="{{ asset('storage/'.$picture->picture_url) }}" width="200" height="160" alt="no image"/>
+                @else
+                    <p>-----</p>
+                @endif
+                <!--{{--投稿者のメールアドレスをもとにGravatarを取得して表示--}}
+                <img class="mr-2 rounded" src="{{ Gravatar::get($picture->user->email,['size'=>50]) }}" alt="">-->
                 <div class="media-body">
                     <div>
                         {{--投稿の所有者のユーザ詳細ページへのリンク--}}
@@ -14,6 +19,11 @@
                         {{--投稿内容--}}
                         <p class="mb-0">{!! nl2br(e($picture->content)) !!}</p>
                     </div>
+                       <!-- @if($picture->picture_url)
+                            <img src="{{ asset('storage/'.$picture->picture_url) }}" width="40" height="40" alt="no image"/>
+                        @else
+                            <p>-----</p>
+                        @endif  -->
                     <div>
                         @if(Auth::user()->is_favorites($picture->id))
                            {{--お気に入り解除ボタンのフォーム--}}

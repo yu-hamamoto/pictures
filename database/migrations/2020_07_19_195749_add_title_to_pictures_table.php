@@ -26,7 +26,7 @@ class AddTitleToPicturesTable extends Migration
     public function down()
     {
         Schema::table('pictures', function (Blueprint $table) {
-            //
+            $table->dropColumn('picture_url');
         });
     }
 }

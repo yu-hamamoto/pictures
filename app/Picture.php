@@ -6,7 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Picture extends Model
 {
-     protected $fillable = ['content'];
+     protected $fillable = [
+         'content','picture_url',
+         ];
 
     /**
      * この投稿を所有するユーザ。（ Userモデルとの関係を定義）
