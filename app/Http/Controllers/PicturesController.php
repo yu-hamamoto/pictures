@@ -58,14 +58,14 @@ class PicturesController extends Controller
         //前のURLへリダイレクトさせる
         return back();
     }
-    public function upload(Request $request)
+    public function store(Request $request)
     {
 
         $select_id=$request->input('select_id');
         
-        $upload_name=$_FILES['picture_url']['name'];
+        $store_name=$_FILES['picture_url']['name'];
         
-        $up_dir='upload/'.$select_id;
+        $up_dir='store/'.$select_id;
         
         $this->validate($request,[
             'picture_url'=>
@@ -80,7 +80,7 @@ class PicturesController extends Controller
                 
                 if($request->file('picture_url')->isValid([])){
 
-                    $filename=$request->file('picture_url')->storeAs($up_dir,$upload_name,'public');
+                    $filename=$request->file('picture_url')->storeAs($up_dir,$store_name,'public');
                    
                    /* $goods=Picture::findOrFail($picture_url);
                     

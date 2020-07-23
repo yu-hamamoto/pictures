@@ -13,7 +13,7 @@
 
 Route::get('/','PicturesController@index');
 //Route::post('picture','PicturesController@uplpad')->name('picture.post');//
-Route::post('upload','PicturesController@upload')->name('upload');
+Route::post('store','PicturesController@store')->name('store');
 
 //ユーザ登録
 Route::get('signup','Auth\RegisterController@showRegistrationForm')->name('signup.get');
