@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Picture;
+use Storage;
 
 class PicturesController extends Controller
 {
@@ -21,7 +22,7 @@ class PicturesController extends Controller
                 'pictures'=>$pictures,
                 
                 ];
-        
+            
         }
     
         //Welcomeビューでそれらを表示
@@ -78,9 +79,21 @@ class PicturesController extends Controller
                 
                 ]);
                 
-                if($request->file('picture_url')->isValid([])){
+                $picture=new Picture;
+                $form=$request->all();
+                //if($request->file('picture_url')->isValid([])){//
+                    $image=$request->file('picture_url');
 
-                    $filename=$request->file('picture_url')->storeAs($up_dir,$store_name,'public');
+                    //$request->file('picture_url')->storeAs($up_dir,$store_name,'public');//
+                    $path=Storage::disk('s3')->putFile('pictureurl',$image,'public');
+                    
+                    $picture->picture_url=Storage::disk('s3')->url($path);
+                    
+                    $picture->user_id=$request->user()->id;
+                    
+                    $picture->content=$request->content;
+                    
+                    $picture->save();
                    
                    /* $goods=Picture::findOrFail($picture_url);
                     
@@ -88,20 +101,20 @@ class PicturesController extends Controller
                     
                     $goods->save();*/
                     
-                    $request->user()->pictures()->create([
+                    /*$request->user()->pictures()->create([
                 
-                    'picture_url'=>$filename,
+                    'picture_url'=>$picture,
                     'content'=>$request->content,
-                    ]);
+                    ]);*/
                     
           
                      
                     return redirect()->to('/')->with('flashmessage','イメージ画像の登録が完了しました。');
-                }
-                else{
+    }
+                /*else{
                     return redirect()->to('/')->with('flashmessage','イメージ画像の登録に失敗しました。');
-                }
+                }*/
                     
-                }
+
     }
     

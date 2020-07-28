@@ -2,11 +2,7 @@
     <ul class="list-unstyled">
         @foreach($pictures as $picture)
             <li class="media mb-3">
-                 @if($picture->picture_url)
-                    <img src="{{ asset('storage/'.$picture->picture_url) }}" width="200" height="160" alt="no image"/>
-                @else
-                    <p>-----</p>
-                @endif
+                     <img src="{{ asset($picture->picture_url) }}" width="200" height="160" alt="no image"/> 
                 <!--{{--投稿者のメールアドレスをもとにGravatarを取得して表示--}}
                 <img class="mr-2 rounded" src="{{ Gravatar::get($picture->user->email,['size'=>50]) }}" alt="">-->
                 <div class="media-body">
