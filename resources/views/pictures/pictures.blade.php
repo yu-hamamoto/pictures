@@ -2,10 +2,13 @@
     <ul class="list-unstyled">
         @foreach($pictures as $picture)
             <li class="media mb-3">
-                     <img src="{{ asset($picture->picture_url) }}" width="200" height="160" alt="no image"/> 
+               
+                     <img data-toggle="modal" data-target="#picture-{{ $picture->id }}" src="{{ asset($picture->picture_url) }}" width="200" hight="16
+                     0" alt="no image">
                 <!--{{--投稿者のメールアドレスをもとにGravatarを取得して表示--}}
                 <img class="mr-2 rounded" src="{{ Gravatar::get($picture->user->email,['size'=>50]) }}" alt="">-->
                 <div class="media-body">
+                    
                     <div>
                         {{--投稿の所有者のユーザ詳細ページへのリンク--}}
                         {!! link_to_route('users.show',$picture->user->name,['user'=>$picture->user->id]) !!}
@@ -41,6 +44,25 @@
                     </div>
                 </div>
             </li>
+           <!-- <img data-toggle="modal" data-target="#$picture->id" src="$picture->id">-->
+               <!-- モーダルで表示させる画像：最初は隠れている -->
+               <div class="modal fade" id="picture-{{ $picture->id }}" tabindex="-1" role="dialog" aria-labelledby="picture-{{ $picture->id }} Label" aria-hidden="true">
+               <div class="modal-dialog" role="document">
+               <div class="modal-content">
+               <div class="modal-header">
+               <!-- タイトル -->
+               <h5 class="modal-title" id="exampleModalLabel">ズーム</h5>
+               <!-- 閉じるボタン -->
+               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+               </button>
+               </div>
+                 <div class="modal-body">
+               <img src="{{ asset($picture->picture_url) }}">
+               </div>
+               </div>
+               </div>
+               </div>
         @endforeach    
     </ul>
     {{--ページネーションのリンク--}}
